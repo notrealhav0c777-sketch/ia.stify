@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ia.stify</title>
+<style>
+:root{--bg:#f4faf5;--card:#fff;--c2:#e5f0e8;--tx:#0f1a13;--mu:#5b6d62;--red:#ff3d5a;--grn:#1fa75a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0f0c;--card:#141b16;--c2:#1e2821;--tx:#f2f7f3;--mu:#92a399;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a0f0c;--card:#141b16;--c2:#1e2821;--tx:#f2f7f3;--mu:#92a399;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:96px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:12px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:22px}.logo i{font-style:normal;color:var(--red)}
+#q{flex:1;min-width:140px;padding:10px 14px;border-radius:99px;border:1px solid var(--c2);background:var(--card);color:var(--tx)}
+nav{display:flex;gap:6px;padding:0 16px 8px;overflow-x:auto}
+nav button,.btn{border:0;border-radius:99px;padding:8px 14px;background:var(--c2);color:var(--tx);cursor:pointer;font:inherit;white-space:nowrap}
+nav button.on,.btn.p{background:var(--red);color:#fff}
+main{padding:8px 16px;max-width:900px;margin:auto}
+h2{margin:18px 0 8px}.mu{color:var(--mu);font-size:13px}
+.row{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:12px;padding:8px 10px;margin:6px 0;flex-wrap:wrap}
+.row.on{outline:2px solid var(--grn)}.inf{flex:1;min-width:120px;display:flex;flex-direction:column}.inf a{color:var(--mu);font-size:13px;text-decoration:none}
+.row button{border:0;background:var(--c2);color:var(--tx);border-radius:99px;padding:5px 10px;cursor:pointer}.row button.a{background:var(--red);color:#fff}
+.row .pl{width:36px;height:36px;padding:0;background:var(--grn);color:#fff}
+.av{border-radius:50%;object-fit:cover;background:var(--grn);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.ban{height:170px;border-radius:16px;background:linear-gradient(120deg,var(--grn),var(--red));background-size:cover;background-position:center}
+.ph{display:flex;gap:14px;align-items:flex-end;margin:-40px 14px 8px}.ph .av{border:4px solid var(--bg)}
+.cm{background:var(--c2);border-radius:10px;padding:8px 12px;margin:-2px 0 8px 20px}.cm p{margin:4px 0;display:flex;gap:8px;align-items:center}
+.cm textarea,dialog input,dialog textarea,#m>input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--c2);background:var(--card);color:var(--tx);font:inherit;margin:4px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.card{background:var(--card);border-radius:12px;padding:12px;cursor:pointer}
+dialog{border:0;border-radius:16px;background:var(--bg);color:var(--tx);width:min(420px,92vw)}dialog::backdrop{background:#0008}
+#bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:center;border-top:1px solid var(--c2);z-index:6}
+#bar .inf{max-width:30%}#bar input{flex:1;accent-color:var(--red);min-width:60px}
+#bar button{border:0;border-radius:50%;width:38px;height:38px;background:var(--red);color:#fff;cursor:pointer;font-size:15px}
+#bar .s{background:var(--c2);color:var(--tx)}
+</style></head><body>
+<header>
+<div class="logo"><svg width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><path d="M10 40V30a22 22 0 0 1 44 0v10" fill="none" stroke="#1fa75a" stroke-width="6"/><path d="M10 40V30a22 22 0 0 1 44 0v10" fill="none" stroke="#0b5a2d" stroke-width="6" stroke-dasharray="5 6" opacity=".7"/><g id="cup"><rect x="3" y="36" width="15" height="21" rx="7.5" fill="#ff3d5a" stroke="#1fa75a" stroke-width="3"/><ellipse cx="9" cy="43" rx="1.2" ry="2" fill="#111"/><ellipse cx="13" cy="48" rx="1.2" ry="2" fill="#111"/><ellipse cx="9" cy="52" rx="1.2" ry="2" fill="#111"/></g><use href="#cup" x="43"/></svg>Ia<i>.</i>stify</div>
+<input id="q" placeholder="Buscar músicas, pessoas e playlists…" oninput="S.q=this.value;go('search')">
+</header>
+<nav id="nv"></nav>
+<main id="m"></main>
+<div id="bar"><div class="inf"><b id="bt">Nada tocando</b><span class="mu" id="ba"></span></div>
+<button class="s" onclick="step(-1)">⏮</button><button id="bp" onclick="tog()">▶</button><button class="s" onclick="step(1)">⏭</button>
+<input id="sk" type="range" min="0" max="100" value="0" oninput="au.currentTime=au.duration*this.value/100"><span class="mu" id="tm">0:00</span></div>
+<audio id="au"></audio>
+<dialog id="dlg"></dialog>
+<script>
+const S={tracks:[],users:[],playlists:[],comments:[],votes:[],uid:null,view:'home',arg:null,q:'',cur:null,ql:[],open:null};
+let D=null,A=null,dirty=false;
+const au=document.getElementById('au'),$=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>{s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const T=id=>S.tracks.find(t=>t.id===id),U=id=>S.users.find(u=>u.id===id)||{id,name:'Usuário',bio:''};
+const cnt=(t,v)=>S.votes.filter(x=>x.t===t&&x.v===v).length;
+function av(u,s){s=s||40;return u.avatar?`<img class="av" style="width:${s}px;height:${s}px" src="${esc(u.avatar)}" alt="">`:`<span class="av" style="width:${s}px;height:${s}px;font-size:${s/2.2}px">${esc((u.name||'?')[0].toUpperCase())}</span>`}
+function go(v,a){S.view=v;S.arg=a||null;S.open=null;render(true);scrollTo(0,0)}
+function render(force){
+ const f=document.activeElement;if(!force&&f&&/INPUT|TEXTAREA/.test(f.tagName)&&f.id!=='q'){dirty=true;return}
+ if(f&&f.tagName==='TEXTAREA'&&!force){return}
+ dirty=false;
+ $('#nv').innerHTML=[['home','Início'],['search','Buscar'],['lib','Biblioteca'],['profile','Meu perfil']].map(([k,n])=>`<button class="${S.view===k&&(k!=='profile'||S.arg===S.uid||!S.arg)?'on':''}" onclick="${k==='profile'?`go('profile','${S.uid}')`:k==='search'?`$('#q').focus();go('search')`:`go('${k}')`}">${n}</button>`).join('');
+ const m=$('#m');
+ if(!S.uid){m.innerHTML=`<h2>Entre no Ia.stify 🍉</h2><input id="ln" placeholder="Usuário"><input id="lp" type="password" placeholder="Senha (6+ caracteres)"><p><button class="btn p" onclick="auth('login')">Entrar</button> <button class="btn" onclick="auth('reg')">Criar conta</button></p><p id="lm" class="mu">${S.err?esc(S.err):''}</p>`;return}
+ const v=S.view;let h='';
+ if(v==='home'){S.ql=S.tracks.slice().sort((a,b)=>b.at-a.at).map(t=>t.id);h=`<h2>Novidades</h2>`+(S.ql.length?S.ql.map(i=>row(T(i))).join(''):`<p class="mu">Ainda não há músicas. Vá em Meu perfil e envie a primeira!</p>`)}
+ else if(v==='search'){const q=S.q.toLowerCase().trim();
+  const us=S.users.filter(u=>q&&((u.name||'').toLowerCase().includes(q)||(u.bio||'').toLowerCase().includes(q)));
+  const ts=S.tracks.filter(t=>!q||t.title.toLowerCase().includes(q)||(U(t.owner).name||'').toLowerCase().includes(q));
+  const ps=S.playlists.filter(p=>q&&p.name.toLowerCase().includes(q));S.ql=ts.map(t=>t.id);
+  h=`<h2>${q?'Resultados':'Todas as músicas'}</h2>`+(us.length?`<h3>Pessoas</h3><div class="cards">${us.map(u=>`<div class="card" onclick="go('profile','${u.id}')">${av(u,56)}<br><b>${esc(u.name)}</b></div>`).join('')}</div>`:'')+(ps.length?`<h3>Playlists</h3><div class="cards">${ps.map(p=>`<div class="card" onclick="go('pl','${p.id}')">📀 <b>${esc(p.name)}</b><br><span class="mu">${esc(U(p.owner).name)}</span></div>`).join('')}</div>`:'')+`<h3>Músicas</h3>`+(ts.map(t=>row(t)).join('')||'<p class="mu">Nada encontrado.</p>')}
+ else if(v==='lib'){const mine=S.playlists.filter(p=>p.owner===S.uid),lk=S.votes.filter(x=>x.u===S.uid&&x.v===1).map(x=>T(x.t)).filter(Boolean);S.ql=lk.map(t=>t.id);
+  h=`<h2>Minhas playlists</h2><button class="btn p" onclick="newpl()">＋ Criar playlist</button><div class="cards" style="margin-top:10px">${mine.map(p=>`<div class="card" onclick="go('pl','${p.id}')">📀 <b>${esc(p.name)}</b><br><span class="mu">${(p.items||[]).length} músicas</span></div>`).join('')}</div><h2>Músicas curtidas</h2>`+(lk.map(t=>row(t)).join('')||'<p class="mu">Curta uma música com ♥.</p>')}
+ else if(v==='pl'){const p=S.playlists.find(x=>x.id===S.arg);if(!p){h='<p class="mu">Playlist não encontrada.</p>'}else{const ts=(p.items||[]).map(T).filter(Boolean);S.ql=ts.map(t=>t.id);
+  h=`<h2>📀 ${esc(p.name)}</h2><p class="mu">por <a href="#" onclick="go('profile','${p.owner}');return false">${esc(U(p.owner).name)}</a></p>${p.owner===S.uid?`<button class="btn" onclick="delpl('${p.id}')">Excluir playlist</button>`:''}`+(ts.map(t=>row(t,p)).join('')||'<p class="mu">Playlist vazia.</p>')}}
+ else if(v==='profile'){const id=S.arg||S.uid,u=U(id),own=id===S.uid,ts=S.tracks.filter(t=>t.owner===id).sort((a,b)=>b.at-a.at),ps=S.playlists.filter(p=>p.owner===id);S.ql=ts.map(t=>t.id);
+  h=`<div class="ban" style="${u.banner?`background-image:url('${esc(u.banner)}')`:''}"></div><div class="ph">${av(u,96)}<div><h2 style="margin:0">${esc(u.name)}</h2></div></div><p>${esc(u.bio)||'<span class="mu">Sem bio ainda.</span>'}</p>`+(own?`<button class="btn p" onclick="editp()">Editar perfil</button> <button class="btn" onclick="upl()">⬆ Enviar música</button> <button class="btn" onclick="newpl()">＋ Playlist</button> <button class=\"btn\" onclick=\"logout()\">Sair</button>`:'')+`<h2>Músicas</h2>`+(ts.map(t=>row(t)).join('')||'<p class="mu">Nenhuma música.</p>')+`<h2>Playlists</h2><div class="cards">${ps.map(p=>`<div class="card" onclick="go('pl','${p.id}')">📀 <b>${esc(p.name)}</b><br><span class="mu">${(p.items||[]).length} músicas</span></div>`).join('')||'<span class="mu">Nenhuma playlist.</span>'}</div>`}
+ m.innerHTML=h;
+}
+function row(t,pl){const u=U(t.owner),mv=(S.votes.find(x=>x.id===t.id+'_'+S.uid)||{}).v,nc=S.comments.filter(c=>c.t===t.id).length,on=S.cur===t.id;
+ return `<div class="row ${on?'on':''}"><button class="pl" onclick="play('${t.id}')">${on&&!au.paused?'❚❚':'▶'}</button><div class="inf"><b>${esc(t.title)}</b><a href="#" onclick="go('profile','${t.owner}');return false">${esc(u.name)}</a></div><span class="mu">${fmt(t.dur)}</span><button class="${mv===1?'a':''}" onclick="vote('${t.id}',1)">♥ ${cnt(t.id,1)}</button><button class="${mv===-1?'a':''}" onclick="vote('${t.id}',-1)">👎 ${cnt(t.id,-1)}</button><button onclick="tg('${t.id}')">💬 ${nc}</button><button onclick="addpl('${t.id}')" title="Adicionar à playlist">＋</button>${pl&&pl.owner===S.uid?`<button onclick="rmpl('${pl.id}','${t.id}')" title="Tirar da playlist">➖</button>`:''}${t.owner===S.uid?`<button onclick="deltr('${t.id}')" title="Excluir">🗑</button>`:''}</div>${S.open===t.id?cbox(t):''}`}
+function cbox(t){const cs=S.comments.filter(c=>c.t===t.id).sort((a,b)=>a.at-b.at);
+ return `<div class="cm">${cs.map(c=>`<p>${av(U(c.u),24)}<span><b>${esc(U(c.u).name)}</b> ${esc(c.x)}</span>${c.u===S.uid?`<button class="btn" style="padding:2px 8px;margin-left:auto" onclick="delcm('${c.id}')">✕</button>`:''}</p>`).join('')||'<span class="mu">Sem comentários.</span>'}<textarea id="ct" rows="2" placeholder="Deixe um comentário…"></textarea><button class="btn p" onclick="cmt('${t.id}')">Comentar</button></div>`}
+const tg=id=>{S.open=S.open===id?null:id;render(true)};
+async function vote(t,v){const id=t+'_'+S.uid,d=D.collection('votes').doc(id),cur=(S.votes.find(x=>x.id===id)||{}).v;try{cur===v?await d.delete():await d.set({t,u:S.uid,v})}catch(e){alert('Erro: '+(e.message||e.code))}}
+async function cmt(t){const x=$('#ct').value.trim();if(!x)return;await D.collection('comments').doc(crypto.randomUUID()).set({t,u:S.uid,x,at:Date.now()});}
+const delcm=id=>D.collection('comments').doc(id).delete();
+async function deltr(id){if(confirm('Excluir esta música?')){await D.collection('tracks').doc(id).delete();if(S.cur===id){au.pause();S.cur=null}}}
+function play(id){const t=T(id);if(!t)return;if(S.cur===id){tog();return}S.cur=id;au.src=t.url;au.play().catch(()=>{});$('#bt').textContent=t.title;$('#ba').textContent=U(t.owner).name}
+function tog(){if(!au.src)return;au.paused?au.play():au.pause()}
+function step(d){const i=S.ql.indexOf(S.cur);const n=S.ql[i+d];if(n)play(n)}
+au.onplay=au.onpause=()=>{$('#bp').textContent=au.paused?'▶':'❚❚';render(true)};
+au.onended=()=>step(1);
+au.ontimeupdate=()=>{$('#sk').value=au.duration?au.currentTime/au.duration*100:0;$('#tm').textContent=fmt(au.currentTime)};
+function openD(h){$('#dlg').innerHTML=h+'<div><button class="btn" onclick="$(\'#dlg\').close()">Fechar</button></div>';$('#dlg').showModal()}
+const msg=t=>{const e=$('#dm');if(e)e.textContent=t};
+function upl(){openD(`<h3>Enviar música</h3><input id="ut" placeholder="Título da música" maxlength="80"><input id="uf" type="file" accept="audio/*,.mp3"><p class="mu">Precisa ter mais de 1:00.</p><button class="btn p" onclick="sendTrack()">Enviar</button><p id="dm" class="mu"></p>`)}
+const dur=f=>new Promise(r=>{const a=new Audio();a.preload='metadata';a.onloadedmetadata=()=>r(a.duration);a.onerror=()=>r(0);a.src=URL.createObjectURL(f)});
+async function sendTrack(){const f=$('#uf').files[0],title=$('#ut').value.trim();if(!f||!title)return msg('Escolha um arquivo e dê um título.');if(!A)return msg('Envio de arquivos indisponível para a sua conta.');
+ msg('Verificando…');const d=await dur(f);if(!d||d<=60)return msg('A música precisa ter mais de 1:00 (esta tem '+fmt(d)+').');
+ msg('Enviando…');let r;try{r=await A.upload(f)}catch(e){try{r=await A.upload(new Blob([f],{type:'video/mpeg'}))}catch(e2){return msg('Não consegui enviar: '+(e2.message||e2.code||e2))}}
+ try{await D.collection('tracks').doc(crypto.randomUUID()).set({owner:S.uid,title,url:r.url,dur:Math.round(d),at:Date.now()});$('#dlg').close()}catch(e){msg('Erro ao salvar: '+(e.message||e.code))}}
+function editp(){const u=U(S.uid);openD(`<h3>Editar perfil</h3><input id="pn" value="${esc(u.name==='Usuário'?'':u.name)}" placeholder="Nome" maxlength="40"><textarea id="pb" rows="3" placeholder="Bio" maxlength="300">${esc(u.bio)}</textarea><label class="mu">Foto de perfil</label><input id="pa" type="file" accept="image/*"><label class="mu">Banner</label><input id="pr" type="file" accept="image/*"><button class="btn p" onclick="saveP()">Salvar</button><p id="dm" class="mu"></p>`)}
+async function saveP(){const u=U(S.uid);const n={name:$('#pn').value.trim()||'Usuário',bio:$('#pb').value.trim(),avatar:u.avatar||'',banner:u.banner||''};
+ try{msg('Salvando…');const a=$('#pa').files[0],b=$('#pr').files[0];if((a||b)&&!A)return msg('Upload indisponível.');if(a)n.avatar=(await A.upload(a)).url;if(b)n.banner=(await A.upload(b)).url;await D.collection('users').doc(S.uid).set(n);$('#dlg').close()}catch(e){msg('Erro: '+(e.message||e.code))}}
+function newpl(){openD(`<h3>Nova playlist</h3><input id="pln" placeholder="Nome da playlist" maxlength="60"><button class="btn p" onclick="mkpl()">Criar</button>`)}
+async function mkpl(t){const n=$('#pln').value.trim();if(!n)return;const id=crypto.randomUUID();await D.collection('playlists').doc(id).set({owner:S.uid,name:n,items:t?[t]:[],at:Date.now()});$('#dlg').close()}
+function addpl(t){const mine=S.playlists.filter(p=>p.owner===S.uid);openD(`<h3>Adicionar à playlist</h3>${mine.map(p=>`<p><button class="btn" onclick="inpl('${p.id}','${t}')">📀 ${esc(p.name)}</button></p>`).join('')||'<p class="mu">Você ainda não tem playlists.</p>'}<input id="pln" placeholder="Nova playlist…" maxlength="60"><button class="btn p" onclick="mkpl('${t}')">Criar e adicionar</button>`)}
+async function inpl(p,t){const pl=S.playlists.find(x=>x.id===p),it=pl.items||[];if(!it.includes(t))await D.collection('playlists').doc(p).update({items:it.concat(t)});$('#dlg').close()}
+async function rmpl(p,t){const pl=S.playlists.find(x=>x.id===p);await D.collection('playlists').doc(p).update({items:(pl.items||[]).filter(x=>x!==t)})}
+async function delpl(p){if(confirm('Excluir a playlist?')){await D.collection('playlists').doc(p).delete();go('lib')}}
+document.addEventListener('focusout',()=>{if(dirty)setTimeout(()=>render(),50)});
+const api=b=>fetch('/api/rpc',{method:'POST',headers:{'content-type':'application/json',authorization:'Bearer '+(localStorage.t||'')},body:JSON.stringify(b)}).then(async r=>{const j=await r.json().catch(()=>({}));if(!r.ok)throw {message:j.e||'Erro no servidor'};return j});
+async function refresh(){try{Object.assign(S,await api({a:'list'}));S.err=null;render()}catch(e){S.err=e.message;render(true)}}
+D={collection:c=>({doc:id=>({set:d=>api({a:'set',c,id,d}).then(refresh),update:d=>api({a:'upd',c,id,d}).then(refresh),delete:()=>api({a:'del',c,id}).then(refresh)})})};
+A={upload:async f=>{const b=await window.__up(f.name,f,{access:'public',handleUploadUrl:'/api/upload',clientPayload:localStorage.t||''});return {url:b.url}}};
+async function auth(a){try{const j=await api({a,n:$('#ln').value,p:$('#lp').value});localStorage.t=j.t;S.uid=j.uid;await refresh();render(true)}catch(e){$('#lm').textContent=e.message}}
+function logout(){delete localStorage.t;S.uid=null;au.pause();render(true)}
+(async()=>{await refresh();if(localStorage.t){try{S.uid=(await api({a:'me'})).uid}catch(e){delete localStorage.t}}render(true);setInterval(refresh,6000)})();
+</script>
+<script type="module">import {upload} from 'https://esm.sh/@vercel/blob@0.27.0/client';window.__up=upload</script></body></html>
